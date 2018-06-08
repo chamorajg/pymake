@@ -20,7 +20,7 @@ def output():
 
 def read():
     global data, fileContents, json_data
-    with open('Android.json') as json_file:
+    with open('Libcutils-Android.json') as json_file:
         json_data = json.load(json_file)
 
 
@@ -40,6 +40,7 @@ def sources():
             source = 'SOURCES = '
 
             if 'srcs' in data['cc_library']:
+                data['cc_library']['srcs'].sort()
                 for j in data['cc_library']['srcs']:
                     source+= '\t\t\t'+j+'\\'+'\n'
 
@@ -53,13 +54,13 @@ def sources():
             if 'target' in data['cc_library'].keys():
                 if 'android' in data['cc_library']['target'].keys():
                     if 'srcs' in data['cc_library']['target']['android'].keys():
+                        data['cc_library']['target']['android']['srcs'].sort()
                         for i in (data['cc_library']['target']['android']['srcs']):
                             source+= '\t\t\t'+i+'\\'+'\n'
     print(name)
     print(source)
     #Can be added if wanted
     #make_include = input('Enter name of the other makefiles to be includec')
-
     fileContents+= name+'\n'+source+'\n'+cpu_sources+'\n'+final_sources
 
 def ldFlags():
